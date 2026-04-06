@@ -19,7 +19,7 @@ ASDD enables small engineering teams to achieve dramatically higher output while
 
 # 1. Introduction
 
-## 1.1 The Limits of Traditional Agile
+## 1.1 Traditional Agile bundaries
 
 Most modern software teams use frameworks such as Scrum and Kanban. These frameworks focus on human collaboration, incremental delivery, and iterative planning. However, they assume that **software is primarily written by humans**.
 
@@ -271,24 +271,95 @@ ASDD defines specialized agents for different responsibilities.
 ## 6.2 AI Agent Orchestration Pipeline
 
 ```mermaid
-flowchart LR
+flowchart TB
 
-Intent[Product Intent]
+    %% PHASE -1/0: STRATEGY & INTENT
+    subgraph Ph0 ["Phase -1/0: Strategy & Intent"]
+        Discovery[Discovery Agent]
+    end
 
-Intent --> DiscoveryAgent[Discovery Agent]
-DiscoveryAgent --> SpecAgent[Spec Agent]
-SpecAgent --> ValidationAgent[Validation Agent]
-ValidationAgent -->|Confidence ≥ threshold| DesignAgent[Design Agent]
-ValidationAgent -->|Confidence < threshold| HumanGate[Human Review Gate]
-HumanGate --> DesignAgent
-DesignAgent --> ImplementationAgent[Implementation Agent]
-ImplementationAgent --> QAAgent[QA Agent]
-QAAgent --> SecurityAgent[Security Agent]
-SecurityAgent --> DevOpsAgent[DevOps Agent]
-DevOpsAgent --> ObservabilityAgent[Observability Agent]
-ObservabilityAgent --> KnowledgeAgent[Knowledge Agent]
-KnowledgeAgent -->|Steering update proposal| HumanApprovalGate[Human Approval Gate]
-HumanApprovalGate -->|Approved| SteeringUpdate[Update .kiro/steering]
+    %% PHASE 1: DISCOVERY & SPECS
+    subgraph Ph1 ["Phase 1: AI-Augmented Discovery"]
+        direction LR
+        Spec[Spec Agent]
+        Validation[Validation Agent]
+        QA_C[QA Agent Mode C]
+        
+        Spec --> Validation
+        Validation --> QA_C
+    end
+
+    %% THE BACKBONE
+    Manifest[(State Manifest)]
+
+    %% PHASE 2: DOMAIN
+    subgraph Ph2 ["Phase 2: Domain Contracts"]
+        Domain[Domain Agent]
+    end
+
+    %% PHASE 3: DESIGN
+    subgraph Ph3 ["Phase 3: Architecture Design"]
+        Design[Design Agent]
+    end
+
+    %% PHASE 4: IMPLEMENTATION
+    subgraph Ph4 ["Phase 4: Agentic Implementation"]
+        direction TB
+        Planning[Task Planning]
+        Implementation[Implementation Orchestrator]
+        SubAgents[[Context-Fresh Sub-Agents]]
+        Refactor[Refactor Agent]
+        
+        Planning --> Implementation
+        Implementation --> SubAgents
+        SubAgents --> Refactor
+    end
+
+    %% PHASE 5: CI/CD
+    subgraph Ph5 ["Phase 5: Autonomous CI/CD"]
+        QA_B[QA Agent Mode B]
+        Security[Security Agent]
+        DevOps[DevOps Agent]
+        
+        QA_B --> Security
+        Security --> DevOps
+    end
+
+    %% PHASE 6: OBSERVABILITY
+    subgraph Ph6 ["Phase 6: Observability"]
+        Observability[Observability Agent]
+    end
+
+    %% PHASE 7: LEARNING
+    subgraph Ph7 ["Phase 7: Production Learning"]
+        Knowledge[Knowledge Agent]
+    end
+
+    %% FLOW
+    Discovery --> Ph1
+    Ph1 -- "CCS > 0.65" --> Ph2
+    Ph2 --> Ph3
+    Ph3 --> Ph4
+    Ph4 --> Ph5
+    Ph5 --> Ph6
+    Ph6 --> Ph7
+
+    %% BACKBONE SYNC
+    Ph0 <--> Manifest
+    Ph1 <--> Manifest
+    Ph2 <--> Manifest
+    Ph3 <--> Manifest
+    Ph4 <--> Manifest
+    Ph5 <--> Manifest
+    Ph6 <--> Manifest
+    Ph7 <--> Manifest
+
+    %% LEARNING LOOP
+    Ph7 -. "Steering Rules / ADRs" .-> Ph1
+
+    %% STYLING
+    classDef backbone fill:#f96,stroke:#333,stroke-width:4px;
+    class Manifest backbone;
 ```
 
 ### 6.2.1 Purpose
@@ -296,10 +367,10 @@ HumanApprovalGate -->|Approved| SteeringUpdate[Update .kiro/steering]
 The agent pipeline transforms:
 
 ```
-intent → specifications → architecture → code → validated system
+intent → specifications → domain model → architecture → task waves → code → validated system
 ```
 
-Each agent produces artifacts stored in the repository. Each transition between agents is a **phase gate** — artifacts are validated before being passed downstream.
+Each agent produces artifacts stored in the repository. Each transition between agents is a **phase gate** — artifacts are validated against the **State Manifest** (`.kiro/state/manifest.json`) before being passed downstream.
 
 ---
 
@@ -307,10 +378,11 @@ Each agent produces artifacts stored in the repository. Each transition between 
 
 > Agent failure is a guaranteed operational condition, not an edge case. Every agent must be designed to fail safely.
 
-### 6.3.1 Confidence Thresholds
+### 6.3.1 Confidence Thresholds and Cascade Guardrails
 
 Each agent must emit a **confidence score** (0.0–1.0) alongside every artifact it produces. Thresholds are defined per agent in `.kiro/steering/agent-thresholds.md`.
 
+#### Confidence Thresholds
 | Agent | Default Minimum Confidence | Action if Below Threshold |
 |---|---|---|
 | Spec Agent | 0.85 | Flag ambiguous sections, route to human |
@@ -320,7 +392,16 @@ Each agent must emit a **confidence score** (0.0–1.0) alongside every artifact
 | Security Agent | 0.95 | Block deployment, require TL + Security review |
 | Knowledge Agent | 0.80 | Propose steering update, require human approval |
 
-### 6.3.2 Failure Modes and Responses
+#### 6.3.2 Cumulative Confidence Guardrail (The Cascade Protector)
+To prevent "Cascading Confidence Failures"—where multiple agents pass their individual gates but with scores just above the minimum—ASDD enforces a **Product Law of Confidence**.
+
+1. **Cumulative Score Calculation:** The `Cumulative Confidence Score (CCS)` for a slice is the product of all agent confidence scores in the current pipeline path:
+   `CCS = (Conf_Spec) * (Conf_Validation) * (Conf_Design) * (Conf_Implementation)`
+2. **Cumulative Threshold:** Regardless of individual scores, if the `CCS` drops below **0.65**, the pipeline triggers an `AUTOMATIC_RECOVERY_HALT`.
+3. **Dynamic Gating:** If a preceding agent provides a low (but passing) score, the next agent's minimum threshold is automatically increased by **+0.05** to compensate for the "uncertainty debt."
+4. **Uncertainty Breakdown:** Agents are required to explicitly list **"Uncertainty Factors"** if their score is < 0.95. This allows the Tech Lead to quickly identify the weak link in a low-CCS slice.
+
+### 6.3.3 Failure Modes and Responses
 
 | Failure Mode | Detection | Response |
 |---|---|---|
@@ -329,6 +410,7 @@ Each agent must emit a **confidence score** (0.0–1.0) alongside every artifact
 | Agent timeout / crash | Pipeline monitor detects no output after N minutes | Retry once, then escalate to TL |
 | Contradictory steering rules | Security Agent detects rule conflict | Block deployment, log conflict, notify TL |
 | Infinite refinement loop | Pipeline monitor detects same artifact version 3+ times | Force-halt pipeline, escalate to TL |
+| Cascading Confidence Failure | Cumulative Confidence Score (CCS) < 0.65 | Halt pipeline, require full human review of all artifacts in slice |
 | Low-confidence cascade | Two or more consecutive agents below threshold | Halt pipeline, require full human review of phase |
 
 ### 6.3.3 Rollback Procedure
@@ -451,20 +533,25 @@ Non-Goals
 
 ## Phase 1 — AI-Augmented Discovery (Behavioral Slicing)
 
-Feature ideas become formal requirements via the Discovery Agent and Spec Agent. To avoid waterfall bottlenecks, ASDD uses **Behavioral Slicing**.
+Feature ideas become formal requirements via the Discovery Agent and Spec Agent. To avoid waterfall bottlenecks, ASDD uses **Behavioral Slicing** and **Agile Governance** to reduce Human-in-the-Loop (HITL) latency.
 
 **Artifact:** `requirements.md`
 
 Requirements must be:
 - **Categorized:** [FEATURE | BUG | IMPROVEMENT | MODULE | PRODUCT]
 - **Sized:** Every requirement must belong to a **Slice** (e.g., MVP, V1, V2).
+- **Risk-Assessed:** Requirements are flagged as [LOW | HIGH] risk by the Validation Agent.
 - **Atomic:** One requirement describes exactly one behavior.
 - **Testable:** Evaluated via the QA Agent.
 - **Written in EARS format.**
 
-### 7.1 Spec Validation Gate (JIT Validation)
+### 7.1 Spec Validation Gate (JIT Validation & Agile Governance)
 
-The Spec Validation Gate is **Just-in-Time (JIT)**. Requirements move through the pipeline in **slices**, not wholesale.
+The Spec Validation Gate is **Just-in-Time (JIT)**. Requirements move through the pipeline in **slices**, not wholesale. To minimize human latency, the following governance models are supported:
+
+1. **Delegated Authority (Auto-Approval):** For **LOW RISK** requirements in **BUG** or **IMPROVEMENT** categories, if the Validation Agent confidence score is ≥ 0.95, the requirement is auto-approved for implementation.
+2. **Asynchronous Approval (RFC Mode):** The Tech Lead (TL) and Product Owner (PO) use an RFC-style process. Agents post proposals, and humans have a defined "SLA" window to dissent. No dissent within the window = implicit approval for the next stage.
+3. **AI-Assisted Peer Review:** Before hitting the human TL, the **QA Agent** must "peer-review" the Spec Agent's output. Only "Peer-Approved" specs reach the human, reducing noisy review cycles.
 
 **Gate checks:**
 - **Category Check:** Requirement is correctly typed.
@@ -472,6 +559,7 @@ The Spec Validation Gate is **Just-in-Time (JIT)**. Requirements move through th
 - **EARS syntax compliance** (automated linter).
 - **Domain term resolution** — every noun in the requirement must exist in the current `domain-model.md`.
 - **Testability score ≥ 0.80** (Validation Agent).
+- **Risk Score Assignment** (Validation Agent).
 
 **Gate failure behavior:**
 - The failing requirement is marked `BLOCKED — VALIDATION FAILED`.
@@ -479,7 +567,7 @@ The Spec Validation Gate is **Just-in-Time (JIT)**. Requirements move through th
 - The Validation Agent emits a structured failure report.
 - No blocked requirement may enter a sprint.
 
-**Resolution ownership:** The Tech Lead and Product Owner collaborate to re-prioritize or re-slice requirements when validation fails.
+**Resolution ownership:** The Tech Lead and Product Owner collaborate to re-prioritize or re-slice requirements when validation fails. For auto-approved slices, the Knowledge Agent monitors for "Regret Metrics" to refine future auto-approval thresholds.
 
 ---
 
@@ -489,7 +577,7 @@ Defines the shared domain language that all agents and humans use. This is the v
 
 **Artifact:** `domain-model.md`
 
-### 7.2 Domain Model Schema *(New in v5.0)*
+### 7.2 Domain Model Schema*
 
 The domain model is **not a free-form markdown file**. It must conform to the following schema to be machine-consumable by downstream agents:
 
@@ -560,11 +648,11 @@ Architecture rules are enforced using **AI guardrails via `.kiro/steering/` file
 
 ---
 
-## Phase 4 — Agentic Implementation
+## Phase 4 — Agentic Implementation (Waves & Sub-Agents)
 
-The Implementation Agent generates tasks and implements code using **automated TDD loops**.
+The Implementation Agent generates tasks and implements code using **Execution Waves** and **Context-Fresh Sub-Agents**.
 
-**Artifact:** `tasks.md`
+**Artifact:** `tasks.md` (Markdown-based, trace-friendly)
 
 **Workflow:**
 
@@ -592,7 +680,13 @@ CI pipelines automatically validate:
 
 ---
 
-## Phase 6 — Observability
+---
+
+## Phase 6 — Observability (The Continuous Sensor)
+
+**Purpose:** Ensure the system is measurable and errors are detectable in real-time.
+
+**Artifacts:** `telemetry-plan.md`, `dashboards.json`, `alerts.yaml`
 
 Systems must expose telemetry for performance monitoring, error detection, and usage analytics. The Observability Agent instruments the system and validates that all defined telemetry points are emitting correctly.
 
@@ -601,6 +695,10 @@ Systems must expose telemetry for performance monitoring, error detection, and u
 - Error rate by type
 - Transaction success/failure counts
 - Business event counts (mapped to domain events from `domain-model.md`)
+
+**Exit Gate:** Observability Agent confirms telemetry emission from all new components.
+
+---
 
 ---
 
@@ -954,15 +1052,127 @@ Organizations adopting ASDD gain:
 
 ---
 
-# 17. Future of Software Development
+## 17.1 Roadmap: Recommendations for the Next Evolution
 
-AI agents will increasingly participate in the engineering lifecycle. Frameworks like ASDD enable teams to transition toward **AI-native software organizations** with appropriate governance in place.
+To further reduce bottlenecks and improve autonomous quality, ASDD v6.0 will focus on the following three architectural evolutions:
 
-Future ASDD versions will explore multi-agent negotiation protocols (when two agents disagree, how do they resolve it without human escalation?), cross-squad Knowledge Agent federation (sharing pattern libraries across tribes), and formal verification of steering rule consistency.
+### 1. Automated Uncertainty Resolution (Spike Agents)
+When an agent reports low confidence and lists **Uncertainty Factors** (Section 6.3.2), the pipeline can trigger a **Discovery Spike Agent**. 
+- **Action:** This agent performs a "Zero-Spec Implementation" or "Documentation Search" to gather evidence.
+- **Outcome:** The evidence is fed back to the original agent to resolve the uncertainty and increase the confidence score without human intervention.
+
+### 2. Cross-Slice Dependency Graph
+As slices move through the pipeline independently, the **Knowledge Agent** will maintain a real-time graph of shared domain entities and system components.
+- **Action:** Detect conflicts where Slice A and Slice B modify the same entity or component in incompatible ways.
+- **Outcome:** Proactive "Conflict Alerts" that halt only the affected slices before they reach the Implementation phase.
+
+### 3. Human-in-the-Loop "Chat-to-Manifest" Interface
+To lower the barrier for POs and TLs, the **Knowledge Agent** will expose a natural language interface to the State Manifest.
+- **Action:** Humans can ask "What's the status of Slice-001?" or "Approve all low-risk bug fixes in the current sprint" via chat.
+- **Outcome:** The agent translates these intents into machine-readable updates to `.kiro/state/manifest.json`, ensuring the system state and human intent remain perfectly synchronized.
 
 ---
 
-# 18. Conclusion
+## 18. Agentic State Management (The Backbone)
+
+To prevent "State Fragmentation" in multi-agent orchestration, ASDD uses a **Manifest-based State Management** model. This ensures a single source of truth for the project's health and pipeline status. This manifest serves as the **Stateful Interface** shown in the center of the agent orchestration flow.
+
+## 18.1 The State Manifest (`.kiro/state/manifest.json`)
+
+All agentic activities are tracked in a centralized, machine-readable manifest. This manifest is the "Heartbeat" of the project.
+
+**Core Data Schema:**
+- `project_context`: Current sprint, product goals, and global confidence scores.
+- `slices`: An array of all active behavioral slices (FEATURE, BUG, etc.).
+  - `slice_id`: Unique identifier (e.g., `SLICE-001`).
+  - `status`: `DISCOVERY | SPEC | VALIDATION | DESIGN | IMPLEMENTATION | DONE | BLOCKED`.
+  - `phase_data`: Links to specific files (`intent.md`, `requirements.md`, etc.).
+  - `confidence_chain`: Array of confidence scores from each agent in the pipeline.
+  - `governance_mode`: `MANUAL | AUTO_APPROVED`.
+  - `blockers`: List of technical or ambiguity blockers.
+- `agent_heartbeats`: Last execution timestamp and status for each agent type.
+
+## 18.2 State Custodian (Knowledge Agent)
+
+The **Knowledge Agent** is the authoritative custodian of the State Manifest. 
+
+**Custodial Rules:**
+1. **Consistency Check:** At the start of any new slice or phase transition, the Knowledge Agent verifies that the Manifest aligns with the filesystem state.
+2. **Conflict Resolution:** If two agents attempt to update the same slice simultaneously, the Knowledge Agent locks the state and requires a human Tech Lead resolution if a conflict is detected.
+3. **Drift Detection:** If a file (e.g., `requirements.md`) is modified without a corresponding update in the Manifest, the Knowledge Agent flags a "State Drift" warning and halts the pipeline.
+
+## 18.3 Atomic State Transitions
+
+Every agent execution must end with an **Atomic State Update**:
+1. Agent completes its task and generates artifacts.
+2. Agent reads the current `.kiro/state/manifest.json`.
+3. Agent proposes an update to its specific slice/phase entry.
+4. Knowledge Agent validates and commits the update.
+
+## 18.4 State Recovery & Rollback
+
+If an agent fails (`Confidence < Threshold`), the Manifest state for that slice is rolled back to the **Last Known Good (LKG)** phase. 
+- The failure is linked to the `agent-failure-log.md`.
+- The slice status is set to `BLOCKED`.
+- The "Uncertainty Factors" from the failing agent are injected into the Manifest to inform the next attempt or human intervention.
+
+---
+
+# 19. High-Velocity Execution (ASDD x GSD)
+
+To bridge the gap between enterprise governance and solo-speed execution, ASDD incorporates "Context-Fresh" execution and "Parallel Wave" implementation strategies.
+
+### 19.1 Context Engineering & Context Rot Prevention
+
+ASDD prevents "Context Rot" (degradation of agent performance in large context windows) by using **Context-Fresh Task-Specific Sub-Agents**:
+1. **The Orchestrator:** The `Implementation Agent` acts as a high-level manager that coordinates waves.
+2. **The Fresh Executor:** For every task, the Orchestrator spawns a **Fresh Sub-Agent** with a clean context window containing *only* the specific task, its requirements, and the relevant local files.
+3. **Goal-Backward Verification:** Sub-agents are instructed to verify their work against the original business requirement (`REQ-NNN`), not just the technical task.
+
+### 19.2 Parallel Wave Execution
+
+Instead of sequential implementation, ASDD groups tasks into **Execution Waves** to maximize concurrency while respecting architectural layers:
+- **Wave 1 (Foundation):** Migrations, Domain Models, Value Objects, Shared Utils.
+- **Wave 2 (Persistence & Logic):** Repositories, Domain Services.
+- **Wave 3 (Integration & API):** Application Services, Controllers, API Handlers.
+- **Wave 4 (Polish):** Observability, Documentation, Feature Flags.
+
+All tasks within a single Wave are executed in parallel by multiple Fresh Sub-Agents, significantly reducing the total time of the Implementation phase.
+
+# 20. "Discuss Mode" (Assumptions-First Discovery)
+
+To accelerate the Discovery Phase, the **Discovery Agent** can operate in **Assumptions-First Mode** (`discuss_mode: assumptions`):
+1. Instead of asking a series of questions, the agent analyzes the `intent.md` and generates a list of **Initial Assumptions** about the system behavior and architecture.
+2. The agent presents these assumptions to the PO/TL: "I assume we are using X library and Y database structure. Correct me if I'm wrong."
+3. **Outcome:** The human only needs to intervene when an assumption is incorrect, drastically reducing "Chat Latency" and getting to `requirements.md` faster.
+
+# 21. From Prompt-Driven to Workflow-Driven Orchestration
+
+The ASDD framework (v6.0) moves from a narrative-based guidance system to a **Structured Execution Engine** using the following components:
+
+### 21.1 The Orchestration Layer
+1.  **Workflows (`.asdd/workflows/`)**: Each phase (Spec, Design, Implementation) has a markdown-based executable workflow. These files define the exact steps, tools, and sequence the agent must follow.
+2.  **ASDD Tools (`.asdd/bin/asdd-tools.js`)**: A centralized CLI utility that ensures deterministic state management. Agents must not manually edit the `manifest.json`; they must call the tools to update statuses and scores.
+3.  **Context-Fresh Sub-Agents**: Implementation phases trigger isolated sub-agents for specific behavioral slices to prevent context decay.
+
+### 21.2 Execution Strategy
+*   **Sequential Reliability**: Agents read the workflow file before any other operation.
+*   **State-Driven Gatekeeping**: Phase gates are now enforced by the `asdd-tools.js calculate-ccs` command. If the score is below 0.65, the tool returns a failure signal, halting the workflow.
+*   **Traceability by Design**: Every tool call is logged, creating a machine-readable audit trail of the engineering process.
+
+# 22. ASDD Quick Mode (`/asdd:quick`)
+
+For trivial tasks (e.g., UI labels, simple bug fixes, documentation updates), ASDD provides a **Fast-Track Flow** that bypasses the full ceremony while maintaining traceability.
+
+**The `/asdd:quick` Workflow:**
+1. **Intent:** User provides a one-line intent (e.g., `/asdd:quick "Fix typo in login header"`).
+2. **Direct Implementation:** The Implementation Agent generates the fix immediately.
+3. **Automated Validation:** The QA Agent verifies the fix against the codebase.
+4. **Manifest Log:** The Knowledge Agent logs the activity in the `manifest.json` as a `QUICK_FIX` slice, ensuring 100% auditability without the Phase Gate overhead.
+
+---
+
+# 22. Conclusion
 
 Agentic Specification-Driven Development represents a shift from **human-centric coding workflows** to **AI-augmented engineering systems** — governed by humans, executed by agents, and continuously improved by production learning loops.
 
@@ -981,9 +1191,9 @@ The key insight of v5.0 is that **agent governance is as important as agent capa
 | 1 Requirements | All requirements pass Spec Validation Gate | TL |
 | 2 Domain | `domain-model.md` schema-compliant and TL-approved | TL |
 | 3 Architecture | `design.md` traceable to requirements; TL-approved | TL |
-| 4 Implementation | Test coverage ≥ threshold; Security Agent scan passed | TL + Engineer |
+| 4 Implementation | `tasks.md` waves complete; TDD tests green | TL + Engineer |
 | 5 CI/CD | All pipeline gates green; no force-bypass | DevOps Agent + TL |
-| 6 Observability | All telemetry points emitting; Observability Agent confirmed | TL |
+| 6 Observability | Telemetry emitting; Observability Agent confirmed | TL |
 | 7 Learning | Knowledge Agent proposals reviewed; approved updates applied | TL + PO |
 
 ---
