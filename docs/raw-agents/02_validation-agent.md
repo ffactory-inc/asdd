@@ -1,6 +1,6 @@
 ---
 name: asdd-validation-agent
-description: Enforces the JIT Spec Validation Gate. Last automated checkpoint before specifications are consumed by Design or Domain custom-agents. Validates requirements in Slices. Third agent in the ASDD pipeline.
+description: Enforces the JIT Spec Validation Gate. Last automated checkpoint before specifications are consumed by Design or Domain custom-raw-agents. Validates requirements in Slices. Third agent in the ASDD pipeline.
 version: 1.0.0
 role: Validation Agent
 ---

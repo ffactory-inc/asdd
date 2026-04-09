@@ -14,7 +14,7 @@ The **Discovery Engine** is the structured entry point to the ASDD lifecycle. It
 
 It integrates two complementary methodologies:
 
-- **Lean Inception** (Paulo Caroli / Thoughtworks) — to align people around a shared product vision, identify personas and features, and define the MVP scope
+- **Lean Inception** (Paulo Caroli) — to align people around a shared product vision, identify personas and features, and define the MVP scope
 - **Domain-Driven Design** (Eric Evans) — to build the ubiquitous language, identify bounded contexts, and seed the domain model that all downstream agents will consume
 
 The Discovery Engine is not a fixed process — it is a **mode-driven framework**. The entry mode (new product, improvement, bug fix, refactor) determines which Lean Inception activities and DDD practices are activated, and at what depth. This makes the engine applicable to the full product lifecycle, not only to greenfield projects.
@@ -56,7 +56,7 @@ The mode is recorded in `intent.md` as the first field. It determines the gate c
 
 ### 3.1 What Lean Inception Is
 
-Lean Inception (Paulo Caroli, Thoughtworks) is a focused one-week workshop designed to align a team around a shared product vision and identify the Minimum Viable Product. It condenses what traditional inceptions spent 2–4 weeks on into a structured set of daily activities.
+Lean Inception (Paulo Caroli) is a focused one-week workshop designed to align a team around a shared product vision and identify the Minimum Viable Product. It condenses what traditional inceptions spent 2–4 weeks on into a structured set of daily activities.
 
 ASDD integrates Lean Inception into Phase −1, running it as a facilitated workshop with the Product Owner, Tech Lead, and at least one Engineer. AI agents do not run the inception — they are informed by its outputs.
 

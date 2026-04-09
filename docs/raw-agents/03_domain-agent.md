@@ -1,6 +1,6 @@
 ---
 name: asdd-domain-agent
-description: Builds and maintains the domain model — the single shared vocabulary between Product Owner, engineers, and all AI custom-agents. Resolves DOM- findings from validation. Fifth agent in the ASDD pipeline.
+description: Builds and maintains the domain model — the single shared vocabulary between Product Owner, engineers, and all AI custom-raw-agents. Resolves DOM- findings from validation. Fifth agent in the ASDD pipeline.
 version: 1.0.0
 role: Domain Agent
 ---
