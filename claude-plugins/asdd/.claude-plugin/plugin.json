@@ -1,0 +1,36 @@
+{
+  "name": "asdd",
+  "description": "Agentic Specification-Driven Development framework for Claude Code. Provides 13 specialized agents, 11 pipeline hooks, 5 discovery skills, and quality-gate rules to orchestrate AI-driven software development from intent to production.",
+  "version": "1.0.0",
+  "author": {
+    "name": "FFactory Team",
+    "email": "edwin@ffactory.io"
+  },
+  "homepage": "https://ffactory-inc.github.io/asdd",
+  "repository": "https://github.com/ffactory-inc/asdd",
+  "license": "MIT",
+  "keywords": ["ASDD", "specification-driven", "agentic", "pipeline", "framework", "agents", "development"],
+  "skills": [
+    "./skills/anti-pattern-detection",
+    "./skills/business-model-canvas",
+    "./skills/capability-prioritization",
+    "./skills/domain-language-extraction",
+    "./skills/user-story-decomposition"
+  ],
+  "agents": [
+    "./agents/asdd-design-agent.md",
+    "./agents/asdd-devops-agent.md",
+    "./agents/asdd-discovery-agent.md",
+    "./agents/asdd-domain-agent.md",
+    "./agents/asdd-implementation-agent.md",
+    "./agents/asdd-knowledge-agent.md",
+    "./agents/asdd-observability-agent.md",
+    "./agents/asdd-qa-agent.md",
+    "./agents/asdd-refactor-agent.md",
+    "./agents/asdd-security-agent.md",
+    "./agents/asdd-spec-agent.md",
+    "./agents/asdd-task-planning-agent.md",
+    "./agents/asdd-validation-agent.md"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

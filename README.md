@@ -41,8 +41,8 @@ Each transition is governed by **Cumulative Confidence Scores (CCS)**. If confid
 
 This repository contains the core components and documentation for the ASDD framework:
 
--   **`claude-plugins/ffactory-asdd/`**: Specialized AI agents and skills for Claude.
-    -   `agents/`: 10 specialized agents (Discovery, Spec, Validation, Design, Implementation, etc.).
+-   **`claude-plugins/asdd/`**: Specialized AI agents and skills for Claude.
+    -   `agents/`: 13 specialized agents (Discovery, Spec, Validation, Design, Implementation, etc.).
     -   `skills/`: Reusable skills like Anti-pattern Detection, BMC Analysis, and User Story Decomposition.
 -   **`kiro-powers/ffactory-asdd/`**: Configuration and steering for the Kiro IDE.
     -   `POWER.md`: Main entry point for the Kiro Power.

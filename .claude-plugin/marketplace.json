@@ -1,7 +1,8 @@
 {
-  "name": "@ffactory",
-  "version": "1.0.0",
-  "description": "Official FFactory plugins for Claude Code",
+  "name": "ffactory",
+  "metadata": {
+    "description": "Official FFactory plugins for Claude Code"
+  },
   "owner": {
     "name": "FFactory",
     "email": "support@ffactory.io"
@@ -9,10 +10,10 @@
   "plugins": [
     {
       "name": "asdd",
-      "description": "Agentic Specification-Driven Development framework for Kiro. Provides 10 specialized custom-agents, 8 pipeline hooks, 5 discovery skills, steering rules, and a state manifest to orchestrate AI-driven software development from intent to production.",
-      "source": "./claude-plugins/ffactory-asdd",
+      "description": "Agentic Specification-Driven Development framework for Claude Code. Provides 13 specialized agents, 11 pipeline hooks, 5 discovery skills, and quality-gate rules to orchestrate AI-driven software development from intent to production.",
+      "source": "./claude-plugins/asdd",
       "category": "productivity",
-      "version": "1.0.2",
+      "version": "1.0.0",
       "author": {
         "name": "FFactory Team",
         "email": "edwin@ffactory.io"

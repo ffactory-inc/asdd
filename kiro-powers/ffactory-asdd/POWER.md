@@ -1,5 +1,5 @@
 ---
-name: "ffactory-asdd"
+name: "asdd"
 displayName: "FFactory ASDD"
 description: "Agentic Specification-Driven Development framework for Kiro. Provides 10 specialized custom-raw-agents, 8 pipeline hooks, 5 discovery skills, steering rules, and a state manifest to orchestrate AI-driven software development from intent to production."
 keywords: ["ASDD", "specification-driven", "agentic", "pipeline", "framework", "raw-agents", "development"]

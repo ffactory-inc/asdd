@@ -8,7 +8,7 @@
           {
             "type": "agent",
             "agent": "asdd-spec-agent",
-            "prompt": "If the completed subagent is asdd-discovery-agent and it produced a new or updated .kiro/specs/[spec-name]/capability.md, invoke asdd-spec-agent to generate requirements.md for that spec. Pass the spec folder path. If no capability.md was produced, do nothing.",
+            "prompt": "If the completed subagent is asdd-discovery-agent and it produced a new or updated .claude/specs/[spec-name]/capability.md, invoke asdd-spec-agent to generate requirements.md for that spec. Pass the spec folder path. If no capability.md was produced, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -19,7 +19,7 @@
           {
             "type": "agent",
             "agent": "asdd-validation-agent",
-            "prompt": "If the completed subagent is asdd-spec-agent and it produced a new or updated .kiro/specs/[spec-name]/requirements.md, invoke asdd-validation-agent to produce spec-validation-report.md for that spec. If no requirements.md was produced, do nothing.",
+            "prompt": "If the completed subagent is asdd-spec-agent and it produced a new or updated .claude/specs/[spec-name]/requirements.md, invoke asdd-validation-agent to produce spec-validation-report.md for that spec. If no requirements.md was produced, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -30,7 +30,7 @@
           {
             "type": "agent",
             "agent": "asdd-domain-agent",
-            "prompt": "If spec-validation-report.md exists under the worked .kiro/specs/[spec-name]/ and Overall Status is PASSED or PASSED_WITH_WARNINGS with CCS >= 0.65 and zero BLOCKING/HIGH findings, invoke asdd-domain-agent with the spec folder path, passing requirements.md and capability.md. Otherwise, notify user with failing items and recommend re-running asdd-spec-agent after fixes. If no report, do nothing.",
+            "prompt": "If spec-validation-report.md exists under the worked .claude/specs/[spec-name]/ and Overall Status is PASSED or PASSED_WITH_WARNINGS with CCS >= 0.65 and zero BLOCKING/HIGH findings, invoke asdd-domain-agent with the spec folder path, passing requirements.md and capability.md. Otherwise, notify user with failing items and recommend re-running asdd-spec-agent after fixes. If no report, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -41,7 +41,7 @@
           {
             "type": "agent",
             "agent": "asdd-design-agent",
-            "prompt": "If the completed subagent updated docs/architecture/domain-model.md or completed domain work for a spec under .kiro/specs/[spec-name]/, invoke asdd-design-agent for that spec with requirements.md, the updated domain-model.md, and spec-validation-report.md to produce design.md. If no domain work completed, do nothing.",
+            "prompt": "If the completed subagent updated docs/architecture/domain-model.md or completed domain work for a spec under .claude/specs/[spec-name]/, invoke asdd-design-agent for that spec with requirements.md, the updated domain-model.md, and spec-validation-report.md to produce design.md. If no domain work completed, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -52,7 +52,7 @@
           {
             "type": "agent",
             "agent": "asdd-task-planning-agent",
-            "prompt": "If .kiro/specs/[spec-name]/design.md was created or updated, and Status is READY with Design confidence >= 0.85, invoke asdd-task-planning-agent with that design.md to produce tasks.md (Execution Waves). Pass requirements.md and domain-model.md context. If DRAFT/BLOCKED or confidence < 0.85, notify user and do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/design.md was created or updated, and Status is READY with Design confidence >= 0.85, invoke asdd-task-planning-agent with that design.md to produce tasks.md (Execution Waves). Pass requirements.md and domain-model.md context. If DRAFT/BLOCKED or confidence < 0.85, notify user and do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -63,7 +63,7 @@
           {
             "type": "agent",
             "agent": "asdd-implementation-agent",
-            "prompt": "If .kiro/specs/[spec-name]/tasks.md was created or updated and Status is READY with confidence >= 0.85, invoke asdd-implementation-agent with that tasks.md to orchestrate Execution Waves (using requirements.md and design.md). If BLOCKED or confidence < 0.85, notify user (if < 0.70, recommend returning to design). If no tasks.md, do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/tasks.md was created or updated and Status is READY with confidence >= 0.85, invoke asdd-implementation-agent with that tasks.md to orchestrate Execution Waves (using requirements.md and design.md). If BLOCKED or confidence < 0.85, notify user (if < 0.70, recommend returning to design). If no tasks.md, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -85,7 +85,7 @@
           {
             "type": "agent",
             "agent": "asdd-security-agent",
-            "prompt": "If .kiro/specs/[spec-name]/spec-coverage-report.md exists from QA, invoke asdd-security-agent to perform security gate and produce security-gate-report.md. If no QA report, do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/spec-coverage-report.md exists from QA, invoke asdd-security-agent to perform security gate and produce security-gate-report.md. If no QA report, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -96,7 +96,7 @@
           {
             "type": "agent",
             "agent": "asdd-devops-agent",
-            "prompt": "If .kiro/specs/[spec-name]/security-gate-report.md exists with decision PASSED or PASSED_WITH_WARNINGS, invoke asdd-devops-agent to generate devops-readiness-report.md. If BLOCKED, notify user and halt. If no security report, do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/security-gate-report.md exists with decision PASSED or PASSED_WITH_WARNINGS, invoke asdd-devops-agent to generate devops-readiness-report.md. If BLOCKED, notify user and halt. If no security report, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -107,7 +107,7 @@
           {
             "type": "agent",
             "agent": "asdd-observability-agent",
-            "prompt": "If .kiro/specs/[spec-name]/devops-readiness-report.md exists with decision READY or READY_WITH_NOTES, invoke asdd-observability-agent to generate observability-readiness-report.md and proposed dashboards. If BLOCKED, notify user and halt. If no devops report, do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/devops-readiness-report.md exists with decision READY or READY_WITH_NOTES, invoke asdd-observability-agent to generate observability-readiness-report.md and proposed dashboards. If BLOCKED, notify user and halt. If no devops report, do nothing.",
             "timeoutMs": 600000
           }
         ]
@@ -118,7 +118,7 @@
           {
             "type": "agent",
             "agent": "asdd-knowledge-agent",
-            "prompt": "If .kiro/specs/[spec-name]/observability-readiness-report.md exists, invoke asdd-knowledge-agent with the spec folder. It should read all spec artifacts and reports (QA/Security/DevOps/Observability), capture ADRs, analyze failures for patterns, update docs/lessons-learned.md, and update state manifest if present. If no observability report, do nothing.",
+            "prompt": "If .claude/specs/[spec-name]/observability-readiness-report.md exists, invoke asdd-knowledge-agent with the spec folder. It should read all spec artifacts and reports (QA/Security/DevOps/Observability), capture ADRs, analyze failures for patterns, update docs/lessons-learned.md, and update state manifest if present. If no observability report, do nothing.",
             "timeoutMs": 600000
           }
         ]
