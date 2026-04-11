@@ -37,24 +37,46 @@ graph LR
 
 Each transition is governed by **Cumulative Confidence Scores (CCS)**. If confidence falls below established thresholds (e.g., CCS < 0.65), the pipeline halts for human intervention.
 
+## Installation & Setup
+To understand the framework in depth, start with the **[Full ASDD Specification](docs/index.md)**.
+
+Choose the installation method for your preferred environment:
+
+### 1. Claude (Desktop & Projects)
+Follow the [Claude Code](https://code.claude.com/) best practices for plugin installation:
+- **Local Installation**: Copy the `claude-plugins/asdd/` contents to your project's `.claude/` directory.
+- **Enable Plugins**: Run `/reload-plugins` in Claude to activate the agents and skills.
+- **Project Structure**: Ensure your workspace follows the structure defined in [claude-plugins/asdd/README.md](claude-plugins/asdd/README.md).
+
+### 2. Cursor IDE
+ASDD is integrated into Cursor via custom rules and subagents:
+- **Manual Setup**: Alternatively, copy `cursor-plugins/asdd/` to your `~/.cursor/plugins/local` folder, then restar de cursors app.
+- **Initialize**: Use the `/asdd-bootstrap` slash command to scaffold the required directory structure.
+- **Configure Rules**: Run `/asdd-steering` to generate and sync project-local `.cursor/rules/` (including `quality-gates.mdc`).
+- See the [Cursor Plugin README](cursor-plugins/asdd/README.md) for detailed command/agent usage.
+
+### 3. Kiro IDE
+Install the ASDD "Power" to enable full pipeline automation:
+- **Install Power**: Follow the [Kiro Powers](https://kiro.dev/docs/powers/) guide to add `kiro-powers/ffactory-asdd/` to your workspace.
+- **Setup Workspace**: Refer to the [ASDD Setup Guide](kiro-powers/ffactory-asdd/steering/setup-guide.md) for step-by-step directory and file initialization.
+- **Automated Pipeline**: Once configured, invoking the `asdd-discovery-agent` will automatically trigger the 8-stage pipeline via Kiro hooks.
+
 ## Project Structure
 
-This repository contains the core components and documentation for the ASDD framework:
+This repository contains the core components and specialized plugins for the ASDD framework:
 
 -   **`claude-plugins/asdd/`**: Specialized AI agents and skills for Claude.
-    -   `agents/`: 13 specialized agents (Discovery, Spec, Validation, Design, Implementation, etc.).
+    -   `agents/`: 13 specialized agents (Discovery, Spec, Validation, Domain, Design, Task Planning, Implementation, QA, Refactor, Knowledge, Security, Observability, DevOps).
     -   `skills/`: Reusable skills like Anti-pattern Detection, BMC Analysis, and User Story Decomposition.
+    -   `rules/`: Quality gates for agent-driven transitions.
+-   **`cursor-plugins/asdd/`**: AI-native integration for Cursor IDE.
+    -   `agents/`: Specialized agent implementations for Cursor.
+    -   `skills/`: Reusable agent skills shared across the framework.
+    -   `commands/`: Custom IDE commands for bootstrapping and steering ASDD.
+    -   `hooks/`: Pipeline routers and automation scripts.
 -   **`kiro-powers/ffactory-asdd/`**: Configuration and steering for the Kiro IDE.
     -   `POWER.md`: Main entry point for the Kiro Power.
     -   `steering/`: Quality gates, agent references, and setup guides.
--   **`docs/`**: Comprehensive documentation of the framework.
-    -   `index.md`: The full ASDD v5.0 Specification.
-    -   `ASDD-Architecture-Pack.md`: Architectural guidelines.
-    -   `raw-agents/`: Technical definitions of the agent roles.
-
-## Getting Started
-
-To understand the framework in depth, start with the **[Full ASDD Specification](docs/index.md)**.
 
 ## Governance & Quality
 
