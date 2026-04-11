@@ -1,0 +1,20 @@
+{
+  "name": "asdd",
+  "displayName": "FFactory ASDD",
+  "description": "Agentic Specification-Driven Development framework for Cursor. Provides 13 specialized agents, 11 pipeline hooks, 5 discovery skills, and quality-gate rules to orchestrate AI-driven software development from intent to production.",
+  "version": "1.0.0",
+  "author": {
+    "name": "FFactory Team",
+    "email": "edwin@ffactory.io"
+  },
+  "homepage": "https://ffactory-inc.github.io/asdd",
+  "repository": "https://github.com/ffactory-inc/asdd",
+  "license": "MIT",
+  "keywords": ["ASDD", "specification-driven", "agentic", "pipeline", "framework", "agents", "development"],
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "rules": "./rules/",
+  "hooks": "./hooks/hooks.json",
+  "logo": "assets/logo.svg"
+}

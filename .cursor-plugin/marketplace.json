@@ -1,0 +1,20 @@
+{
+    "name": "ffactory",
+    "owner": {
+      "name": "FFactory",
+      "email": "support@ffactory.io"
+    },
+    "metadata": {
+      "description": "Official FFactory plugins for Cursor",
+      "homepage": "https://ffactory.io",
+      "repository": "https://github.com/ffactory-inc/asdd",
+      "license": "MIT"
+    },
+    "plugins": [
+      {
+        "name": "asdd",
+        "source": "cursor-plugins/asdd",
+        "description": "Agentic Specification-Driven Development framework for Cursor. Provides 13 specialized agents, 11 pipeline hooks, 5 discovery skills, and quality-gate rules to orchestrate AI-driven software development from intent to production."
+      }
+    ]
+  }

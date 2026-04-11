@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "hooks": {
+    "subagentStop": [
+      {
+        "type": "command",
+        "command": "./asdd-pipeline-router.sh",
+        "timeout": 20,
+        "loop_limit": 20,
+        "matcher": "asdd-[a-z-]+-agent"
+      }
+    ]
+  }
+}
