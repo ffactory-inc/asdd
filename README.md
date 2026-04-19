@@ -9,6 +9,23 @@
 
 ASDD enables engineering teams to achieve dramatically higher output while maintaining architectural quality, security, and system observability by moving from human-centric agile processes to AI-native engineering.
 
+## Human–Agent Agile Manifesto
+
+ASDD is paired with the **Human–Agent Agile Manifesto** (v3.0, Agentic Era · 2026): a concise charter for **human judgment plus agentic intelligence**—the same worldview as this framework, in manifesto form (preamble, values, principles, roles, phase gates, glossary, and comparison to the 2001 Agile Manifesto).
+
+### Four core values
+
+> *That is, while there is value in the items on the right, we value the items on the left more.*
+
+| We value more | Over |
+|---|---|
+| **Validated intent** | Generated code |
+| **Human authority** | Agent autonomy |
+| **Continuous trust loops** | Periodic reviews |
+| **Adaptive execution** | Rigid planning |
+
+**Full text:** [Human–Agent Agile Manifesto](docs/human–agent-agile-manifesto.md) — all principles (including Hallucination Budget, Reasoning Traces, and governance), accountability tables, and definitions.
+
 ## Core Principles
 
 1.  **Ambiguity Is a Bug**: Machine-interpretable specifications validated by automated gates before any agent consumes them.
