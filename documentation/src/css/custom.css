@@ -1,0 +1,318 @@
+/**
+ * ASDD Framework — Docusaurus custom styles
+ * Brand: primary #D2006E, secondary #0A0832
+ */
+
+:root {
+  --asdd-color-primary: #d2006e;
+  --asdd-color-secondary: #0a0832;
+
+  --ifm-color-primary: #d2006e;
+  --ifm-color-primary-dark: #b80061;
+  --ifm-color-primary-darker: #9e0055;
+  --ifm-color-primary-darkest: #850048;
+  --ifm-color-primary-light: #e31a7d;
+  --ifm-color-primary-lighter: #eb3d91;
+  --ifm-color-primary-lightest: #f9c4dd;
+
+  --ifm-color-secondary: #0a0832;
+  --ifm-color-secondary-dark: #080628;
+  --ifm-color-secondary-darker: #06051f;
+  --ifm-color-secondary-darkest: #040314;
+  --ifm-color-secondary-light: #12104a;
+  --ifm-color-secondary-lighter: #1a1758;
+  --ifm-color-secondary-lightest: #242160;
+
+  --ifm-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
+  --ifm-code-font-size: 92%;
+  --ifm-heading-font-weight: 700;
+  --ifm-navbar-background-color: var(--asdd-color-secondary);
+  --ifm-navbar-link-color: #e2e8f0;
+  --ifm-navbar-link-hover-color: #f9a8d4;
+  --ifm-navbar-logo-filter: brightness(0) invert(1);
+
+  --docusaurus-highlighted-code-line-bg: rgba(210, 0, 110, 0.12);
+
+  /* Audience badge colors */
+  --badge-exec: #7c3aed;
+  --badge-tech: #d2006e;
+  --badge-junior: #059669;
+}
+
+[data-theme="dark"] {
+  --ifm-color-primary: #ff4d9e;
+  --ifm-color-primary-dark: #f23d8f;
+  --ifm-color-primary-darker: #e31a7d;
+  --ifm-color-primary-darkest: #d2006e;
+  --ifm-color-primary-light: #ff6cad;
+  --ifm-color-primary-lighter: #ff8ec0;
+  --ifm-color-primary-lightest: #ffc4df;
+
+  --ifm-navbar-background-color: var(--asdd-color-secondary);
+  --ifm-background-color: #0f0e24;
+  --ifm-footer-background-color: var(--asdd-color-secondary);
+  --docusaurus-highlighted-code-line-bg: rgba(255, 77, 158, 0.12);
+}
+
+/* ── Navbar ────────────────────────────────────────────────── */
+.navbar {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.navbar__title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+/* ── Hero (home page) ──────────────────────────────────────── */
+.hero--asdd {
+  background: linear-gradient(
+    135deg,
+    #0a0832 0%,
+    #120f3d 42%,
+    #1a0f32 55%,
+    #0a0832 100%
+  );
+  color: #f8fafc;
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+}
+
+.hero--asdd .hero__title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #f8fafc 20%, #f9a8d4 55%, #d2006e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero--asdd .hero__subtitle {
+  font-size: 1.3rem;
+  color: #cbd5e1;
+  margin-top: 1rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero__buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Feature cards ─────────────────────────────────────────── */
+.features-section {
+  padding: 4rem 2rem;
+  background: var(--ifm-background-color);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.75rem;
+  background: var(--ifm-card-background-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 2px rgba(210, 0, 110, 0.14);
+}
+
+.feature-card__icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.feature-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-heading-color);
+}
+
+.feature-card__description {
+  font-size: 0.925rem;
+  color: var(--ifm-color-content-secondary);
+  line-height: 1.6;
+}
+
+/* ── Audience section ──────────────────────────────────────── */
+.audience-section {
+  padding: 3rem 2rem;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.audience-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-decoration: none !important;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.audience-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.audience-card--exec {
+  background: linear-gradient(135deg, #4c1d95, #6d28d9);
+  color: #f5f3ff;
+}
+
+.audience-card--tech {
+  background: linear-gradient(135deg, #0a0832, #1a0f3d 55%, #5c0d3a);
+  color: #fce7f3;
+}
+
+.audience-card--junior {
+  background: linear-gradient(135deg, #064e3b, #059669);
+  color: #d1fae5;
+}
+
+.audience-card__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.audience-card__subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 0.75rem;
+}
+
+.audience-card__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.audience-card__links li {
+  font-size: 0.9rem;
+  padding: 0.2rem 0;
+  opacity: 0.9;
+}
+
+/* ── Admonitions — audience callouts ──────────────────────── */
+.admonition.alert--exec {
+  --ifm-alert-background-color: #faf5ff;
+  --ifm-alert-border-color: #7c3aed;
+  --ifm-alert-color: #4c1d95;
+}
+
+[data-theme="dark"] .admonition.alert--exec {
+  --ifm-alert-background-color: #1e1030;
+  --ifm-alert-color: #c4b5fd;
+}
+
+/* ── Mermaid diagrams ──────────────────────────────────────── */
+.docusaurus-mermaid-container {
+  background: var(--ifm-code-background);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+/* ── Tables ────────────────────────────────────────────────── */
+table {
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+thead tr {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* ── Version badge ─────────────────────────────────────────── */
+.version-badge {
+  display: inline-block;
+  background: var(--ifm-color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Section dividers ──────────────────────────────────────── */
+.section-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-title h2 {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.section-title p {
+  color: var(--ifm-color-content-secondary);
+  font-size: 1.1rem;
+}
+
+/* ── Pipeline visualization ────────────────────────────────── */
+.pipeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 2rem 0;
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+.footer {
+  background: var(--asdd-color-secondary);
+}
+
+.footer__title {
+  color: #f8fafc;
+}
+
+.footer__link-item {
+  color: #94a3b8;
+}
+
+.footer__link-item:hover {
+  color: #f9a8d4;
+}
+
+/* ── Responsive tweaks ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero--asdd .hero__title {
+    font-size: 2.25rem;
+  }
+
+  .hero--asdd .hero__subtitle {
+    font-size: 1.05rem;
+  }
+}
