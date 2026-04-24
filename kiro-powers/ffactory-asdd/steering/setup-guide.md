@@ -125,7 +125,11 @@ The full skill definitions are documented in the **skills-reference** steering f
 Create project-specific steering files under `.kiro/steering/`. At minimum, create:
 
 - `quality-gates.md` — Spec coverage thresholds, CCS gates, tech debt cleanup rules.
-
+- Generate Steering Rules for the projects.
+  - `project.md` 
+  - `tech.md`
+  - `structure.md` 
+ 
 Optional but recommended:
 - `api-standards.md` — API design conventions.
 - `structure.md` — Project directory conventions.

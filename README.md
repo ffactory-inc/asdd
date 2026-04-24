@@ -1,11 +1,15 @@
 # Agentic Specification-Driven Development (ASDD) Framework
 
-[![Version](https://img.shields.io/badge/version-5.0-blue.svg)](docs/index.md)
+[![Version](https://img.shields.io/badge/version-5.0-blue.svg)](../../../Library/Application%20Support/JetBrains/WebStorm2026.1/scratches/ASSD/docs/index.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
 
 **Agentic Specification-Driven Development (ASDD)** is a framework for building software using **AI-assisted specifications, autonomous agents, and production learning loops**. It transforms the traditional development lifecycle into a structured pipeline where specifications are the central artifact coordinating both humans and AI agents.
+
+### Documentation site (GitHub Pages)
+
+The Docusaurus site in [`documentation/`](documentation/) is built and deployed with [GitHub Actions](.github/workflows/deploy-docs.yml) on pushes to `main` that touch `documentation/` or the workflow file. After you enable **Settings → Pages → Build and deployment → Source: GitHub Actions**, the site is served at [https://ffactory-inc.github.io/asdd/](https://ffactory-inc.github.io/asdd/). To work on it locally: `cd documentation && npm ci && npm start`, then open the URL shown in the terminal (paths use the `/asdd/` base URL from [`docusaurus.config.ts`](documentation/docusaurus.config.ts)).
 
 ASDD enables engineering teams to achieve dramatically higher output while maintaining architectural quality, security, and system observability by moving from human-centric agile processes to AI-native engineering.
 
@@ -24,7 +28,7 @@ ASDD is paired with the **Human–Agent Agile Manifesto** (v3.0, Agentic Era · 
 | **Continuous trust loops** | Periodic reviews |
 | **Adaptive execution** | Rigid planning |
 
-**Full text:** [Human–Agent Agile Manifesto](docs/human–agent-agile-manifesto.md) — all principles (including Hallucination Budget, Reasoning Traces, and governance), accountability tables, and definitions.
+**Full text:** [Human–Agent Agile Manifesto](../../../Library/Application%20Support/JetBrains/WebStorm2026.1/scratches/ASSD/docs/human–agent-agile-manifesto.md) — all principles (including Hallucination Budget, Reasoning Traces, and governance), accountability tables, and definitions.
 
 ## Core Principles
 
@@ -55,7 +59,7 @@ graph LR
 Each transition is governed by **Cumulative Confidence Scores (CCS)**. If confidence falls below established thresholds (e.g., CCS < 0.65), the pipeline halts for human intervention.
 
 ## Installation & Setup
-To understand the framework in depth, start with the **[Full ASDD Specification](docs/index.md)**.
+To understand the framework in depth, start with the **[Full ASDD Specification](../../../Library/Application%20Support/JetBrains/WebStorm2026.1/scratches/ASSD/docs/index.md)**.
 
 Choose the installation method for your preferred environment:
 
